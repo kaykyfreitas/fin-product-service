@@ -45,17 +45,17 @@ public class Product extends AggregateRoot<ProductId> {
             final String name,
             final String description,
             final BigDecimal price,
-            final ProductSku sku,
             final CategoryId categoryId
     ) {
         final var productId = ProductId.unique();
+        final var productSku = ProductSku.generate(name);
         final var now = InstantUtils.now();
         return new Product(
                 productId,
                 name,
                 description,
                 price,
-                sku,
+                productSku,
                 true,
                 categoryId,
                 now,

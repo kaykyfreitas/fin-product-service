@@ -17,11 +17,36 @@ public class ProductSku extends ValueObject {
     }
 
     public static ProductSku generate(final String productName) {
-        final String sanitizedName = productName.replaceAll("[^a-zA-Z0-9]", "").toUpperCase();
-        final String truncatedName = sanitizedName.length() > 7 ? sanitizedName.substring(0, 7) : sanitizedName;
-        final String timestamp = String.valueOf(Instant.now().toEpochMilli());
-        final String sku = (truncatedName + timestamp).substring(0, 20);
+        String validatedName = productName;
+        if (productName == null || productName.isBlank())
+            validatedName = "";
+
+        final String sanitizedName = sanitizeName(validatedName);
+        final String paddedName = padName(sanitizedName);
+        final String truncatedName = truncateName(paddedName);
+        final String timestamp = generateTimestamp();
+        final String sku = generateSku(truncatedName, timestamp);
         return new ProductSku(sku);
+    }
+
+    private static String sanitizeName(final String productName) {
+        return productName.replaceAll("[^a-zA-Z0-9]", "").toUpperCase();
+    }
+
+    private static String padName(final String name) {
+        return name.length() < 7 ? String.format("%-7s", name).replace(' ', 'X') : name;
+    }
+
+    private static String truncateName(final String name) {
+        return name.substring(0, Math.min(name.length(), 7));
+    }
+
+    private static String generateTimestamp() {
+        return String.valueOf(Instant.now().toEpochMilli());
+    }
+
+    private static String generateSku(final String name, final String timestamp) {
+        return (name + timestamp).substring(0, 20);
     }
 
     public String getValue() {
