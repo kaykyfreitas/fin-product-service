@@ -122,15 +122,14 @@ public class Product extends AggregateRoot<ProductId> {
             final String name,
             final String description,
             final BigDecimal price,
-            final ProductSku sku,
             final CategoryId categoryId
     ) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.sku = sku;
         this.categoryId = categoryId;
         this.updatedAt = InstantUtils.now();
+        this.selfValidation();
         return this;
     }
 
