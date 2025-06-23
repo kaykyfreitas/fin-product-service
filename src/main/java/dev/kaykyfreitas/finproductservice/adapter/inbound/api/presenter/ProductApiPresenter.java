@@ -17,9 +17,9 @@ public interface ProductApiPresenter {
                 output.name(),
                 output.description(),
                 output.price(),
-                output.sku(),
+                output.sku().getValue(),
                 output.active(),
-                output.categoryId(),
+                output.categoryId().getValue(),
                 output.createdAt(),
                 output.updatedAt(),
                 output.deletedAt()
